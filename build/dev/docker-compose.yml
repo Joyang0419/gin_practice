@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    restart: always
+    build:
+      context: ..
+      dockerfile: mysql/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ../volume/mysql/data:/var/lib/mysql
